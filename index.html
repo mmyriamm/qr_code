@@ -87,9 +87,10 @@
                         outputData.parentElement.hidden = false;
                         outputData.innerText = code.data;
 
-                        if (valideURL(code.data)) {
+                        if (validURL(code.data)) {
                             window.location.href = code.data;
                         }
+                        
                     }
                 }
                 requestAnimationFrame(tick);
