@@ -31,13 +31,6 @@
         <script src="js/script.js"></script>
 
         <script>
-            // Check that service workers are supported
-            if ('serviceWorker' in navigator) {
-                // Use the window load event to keep the page load performant
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('service-worker.js');
-                });
-            }
 
             var video = document.createElement("video");
             var canvasElement = document.getElementById("canvas");
@@ -46,7 +39,23 @@
             var outputContainer = document.getElementById("output");
             var outputMessage = document.getElementById("outputMessage");
             var outputData = document.getElementById("outputData");
-        
+
+            // Check that service workers are supported
+            if ('serviceWorker' in navigator) {
+                // Use the window load event to keep the page load performant
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('service-worker.js');
+                });
+            }
+            
+            // Use facingMode: environment to attemt to get the front camera on phones
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
+                video.srcObject = stream;
+                video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+                video.play();
+                requestAnimationFrame(tick);
+            });
+
             function drawLine(begin, end, color) {
                 canvas.beginPath();
                 canvas.moveTo(begin.x, begin.y);
@@ -54,15 +63,7 @@
                 canvas.lineWidth = 4;
                 canvas.strokeStyle = color;
                 canvas.stroke();
-                }
-            
-                // Use facingMode: environment to attemt to get the front camera on phones
-                navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
-                video.srcObject = stream;
-                video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-                video.play();
-                requestAnimationFrame(tick);
-            });
+            }
         
             function tick() {
                 loadingMessage.innerText = "⌛ Loading video..."
@@ -88,6 +89,7 @@
                         outputData.innerText = code.data;
 
                         if (validURL(code.data)) {
+                            video.stop();
                             window.location.href = code.data;
                         }
                         
@@ -105,6 +107,7 @@
                     '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
                 return !!pattern.test(str);
             }
+            
         </script>
     </body>
 </html>
