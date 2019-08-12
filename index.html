@@ -91,7 +91,7 @@
                         outputData.innerText = code.data;
 
                         if (validURL(code.data)) {
-                            video.getTracks().forEach(track => track.stop())
+                            stream_file.getTracks().forEach(track => track.stop())
                             window.location.href = code.data;
                         }
                         
