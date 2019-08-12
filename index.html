@@ -89,7 +89,7 @@
                         outputData.innerText = code.data;
 
                         if (validURL(code.data)) {
-                            video.stop();
+                            video.getTracks().forEach(track => track.stop())
                             window.location.href = code.data;
                         }
                         
@@ -107,7 +107,7 @@
                     '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
                 return !!pattern.test(str);
             }
-            
+
         </script>
     </body>
 </html>
