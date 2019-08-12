@@ -32,6 +32,7 @@
 
         <script>
 
+            var stream_file;
             var video = document.createElement("video");
             var canvasElement = document.getElementById("canvas");
             var canvas = canvasElement.getContext("2d");
@@ -50,6 +51,7 @@
             
             // Use facingMode: environment to attemt to get the front camera on phones
             navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
+                stream_file = stream;
                 video.srcObject = stream;
                 video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
                 video.play();
